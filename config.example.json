@@ -1,0 +1,24 @@
+{
+    
+  "bot": {
+    "prefix": "!",
+    "discription": "I'm a bot yo"
+  },
+
+  "login": {
+    "token": ""
+  },
+
+  "admin": [],
+
+  "admin_channels": [],
+
+  "mod": [],
+
+  "ignore": [],
+
+  "urls": {},
+
+  "api_keys": {}
+}
+   
