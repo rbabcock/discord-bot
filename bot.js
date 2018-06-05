@@ -14,9 +14,8 @@ bot.on("ready", async () => {
   }
 });
 
-bot.on("message", async message =>{
-  if(message.author.bot) return 
-  if(message.channel.type === "dm") return
+bot.on("message", async message => {
+  if(message.author.bot || message.channel.type === "dm") return
 
   let messageArray = message.content.split(" ")
   let command = messageArray[0]
@@ -26,7 +25,7 @@ bot.on("message", async message =>{
   if(!command.startsWith(prefix)) return;
 
   if(command === `${prefix}hello`){
-      console.log("Hello")
+      message.channel.send("Hello")
   }
  
 });
