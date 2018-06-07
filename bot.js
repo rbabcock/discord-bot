@@ -1,16 +1,38 @@
 const config = require("./config.json");
 const Discord = require("discord.js");
 const prefix = config.bot.prefix;
+const fs = require("fs")
+
 
 const bot = new Discord.Client();
+bot.commands = new Discord.Collection();
+
+fs.readdir("./plugins/", (err, plugins) => {
+  if(err) console.error(err);
+
+  let jsfiles = plugins.filter(f => f.split(".").pop() === "js");
+  if(jsfiles.length <= 0) {
+    console.log("No plugins to load!");
+    return;
+  }
+
+  console.log(`Loading ${jsfiles.length} plugins!`);
+
+  jsfiles.forEach((f, i) => {
+    let plugins = require(`./plugins/${f}`);
+    console.log(`${i + 1}: ${f} loaded!`);
+    bot.commands.set(plugins.help.name, plugins);
+  });
+});
 
 bot.on("ready", async () => {
   try {
     console.log(`logged in as ${bot.user.username}`);
     let link = await bot.generateInvite(["ADMINISTRATOR"]);
-    console.log(link);
+
+
   }catch(e) {
-    console.log(e.stack)
+    console.log(e.stack);
   }
 });
 
@@ -24,9 +46,8 @@ bot.on("message", async message => {
 
   if(!command.startsWith(prefix)) return;
 
-  if(command === `${prefix}hello`){
-      message.channel.send("Hello")
-  }
+  let cmd = bot.commands.get(command.slice(prefix.length));
+  if(cmd) cmd.run(bot, message, args);
  
 });
 
