@@ -10,7 +10,15 @@ const bot = new CommandoClient({
     disableEveryone: true
 });
 
-console.log(admin.toString())
+bot
+    .on("ready", async () => {
+        try {
+          console.log(`logged in as ${bot.user.username}`)
+          let link = await bot.generateInvite(["ADMINISTRATOR"])
+        }catch(e) {
+          console.log(e.stack)
+        }
+      });
 
 bot.registry
   .registerDefaultTypes()
@@ -22,13 +30,6 @@ bot.registry
   .registerDefaultCommands()
   .registerCommandsIn(path.join(__dirname, 'cmds'));
 
-bot.on("ready", async () => {
-  try {
-    console.log(`logged in as ${bot.user.username}`)
-    let link = await bot.generateInvite(["ADMINISTRATOR"])
-  }catch(e) {
-    console.log(e.stack)
-  }
-});
+
 
 bot.login(token)
