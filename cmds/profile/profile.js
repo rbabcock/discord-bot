@@ -3,8 +3,8 @@ const { RichEmbed } = require('discord.js')
 const { Command } = require('discord.js-commando');
 
 module.exports = class ProfileCommand extends Command {
-    constructor(bot) {
-        super(bot, {
+    constructor(client) {
+        super(client, {
             name: 'profile',
             group: 'profile',
             memberName: 'profile',
