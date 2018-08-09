@@ -1,4 +1,3 @@
-
 const { RichEmbed } = require('discord.js')
 const { Command } = require('discord.js-commando');
 

@@ -1,6 +1,6 @@
 const { Command } = require('discord.js-commando');
 
-module.exports = class VoiceJoinCommand extends Command {
+module.exports = class VoiceLeaveCommand extends Command {
     constructor(client) {
         super(client, {
             name: 'leave',
