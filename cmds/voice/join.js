@@ -19,13 +19,17 @@ module.exports = class VoiceJoinCommand extends Command {
         });
     }
 
-    async run(message, { channel }) {
+    async run(msg, { channel }) {
       const bot = this.client
+      let voiceChannel = msg.member.voiceChannel
       
-      if(message.member.voiceChannel)
-        message.member.voiceChannel.join()
+      if(!voiceChannel) {
+        return msg.say('please join a voiceChannel before issuing this command')
+      }
+
+      msg.member.voiceChannel.join()
         .then(connection => {
-            console.log(`${bot.user.username} have successfully connected to voice channel ${message.member.voiceChannel.name}`);
+            console.log(`${bot.user.username} have successfully connected to voice channel ${msg.member.voiceChannel.name}`);
         })
         .catch(console.log);
     }
