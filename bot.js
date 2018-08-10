@@ -24,7 +24,8 @@ bot.registry
   .registerDefaultTypes()
   .registerGroups([
     ['profile', 'Profile Command'],
-    ['voice', 'Voice Command']
+    ['voice', 'Voice Command'],
+    ['music', 'Music Commands']
   ])
   .registerDefaultGroups()
   .registerDefaultCommands()
