@@ -1,0 +1,32 @@
+{
+  "name": "donroblo",
+  "version": "0.0.1",
+  "description": "Discord Bot",
+  "main": "bot.js",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "discord.js-commando": "^0.10.0",
+    "eslint": "^5.16.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rbabcock/discord-bot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "Robert Babcock",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rbabcock/discord-bot/issues"
+  },
+  "homepage": "https://github.com/rbabcock/discord-bot#readme"
+}

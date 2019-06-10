@@ -1,24 +1,23 @@
-const { prefix, token, admin } = require("./config.json");
+const { prefix, login, admin } = require("./config.json");
 const { CommandoClient } = require("discord.js-commando");
 const fs = require("fs");
 const path = require('path')
 
-
+ console.log(admin[0]);
 const bot = new CommandoClient({
     commandPrefix: '!',
-    owner: [admin[0]],
+    owner: admin[0],
     disableEveryone: true
 });
 
-bot
-    .on("ready", async () => {
-        try {
-          console.log(`logged in as ${bot.user.username}`)
-          let link = await bot.generateInvite(["ADMINISTRATOR"])
-        }catch(e) {
-          console.log(e.stack)
-        }
-      });
+bot.on("ready", async () => {
+    try {
+      console.log(`logged in as ${bot.user.username}`)
+      let link = await bot.generateInvite(["ADMINISTRATOR"])
+    }catch(e) {
+      console.log(e.stack)
+    }
+  });
 
 bot.registry
   .registerDefaultTypes()
@@ -31,6 +30,4 @@ bot.registry
   .registerDefaultCommands()
   .registerCommandsIn(path.join(__dirname, 'cmds'));
 
-
-
-bot.login(token)
+bot.login(login.token)
