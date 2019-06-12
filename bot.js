@@ -3,7 +3,6 @@ const { CommandoClient } = require("discord.js-commando");
 const fs = require("fs");
 const path = require('path')
 
- console.log(admin[0]);
 const bot = new CommandoClient({
     commandPrefix: '!',
     owner: admin[0],
