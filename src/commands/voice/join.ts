@@ -1,7 +1,7 @@
-const { Command } = require('discord.js-commando');
+import { CommandoMessage, Command, CommandoClient } from "discord.js-commando";
 
-module.exports = class VoiceJoinCommand extends Command {
-    constructor(client) {
+export default class VoiceJoinCommand extends Command {
+    constructor(client: CommandoClient) {
         super(client, {
             name: 'join',
             group: 'voice',
@@ -19,18 +19,19 @@ module.exports = class VoiceJoinCommand extends Command {
         });
     }
 
-    async run(msg, { channel }) {
-      const bot = this.client
-      let voiceChannel = msg.member.voiceChannel
+    async run(message: CommandoMessage) {
+      const client = this.client
+      let voiceChannel = message.member?.voice.channel
       
       if(!voiceChannel) {
-        return msg.say('please join a voiceChannel before issuing this command')
+        return message.say('please join a voiceChannel before issuing this command')
       }
 
-      msg.member.voiceChannel.join()
+      voiceChannel.join()
         .then(connection => {
-            console.log(`${bot.user.username} have successfully connected to voice channel ${msg.member.voiceChannel.name}`);
+            console.log(`${client.user?.username} have successfully connected to voice channel ${voiceChannel?.name}`);
         })
         .catch(console.log);
+        return message.say(`Joined ${voiceChannel.name}`)
     }
 };

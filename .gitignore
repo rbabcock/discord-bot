@@ -1,4 +1,5 @@
 .DS_Store
-
+dist
 config.json
 node_modules
+**.js
