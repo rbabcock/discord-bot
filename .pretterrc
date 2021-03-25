@@ -1,7 +1,8 @@
 {
   "semi": true,
-  "trailingComma": "none",
+  "trailingComma": "all",
   "singleQuote": true,
   "printWidth": 80
-  "editor.formatOnSave": true,
+  "arrowParens": "always",
+  "bracketSpacing": true
 }

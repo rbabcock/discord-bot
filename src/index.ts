@@ -1,7 +1,7 @@
 import { CommandoClient } from "discord.js-commando";
 import { join } from "path";
 
-const { login, admin } = require("./config/config.json");
+const { login, admin } = require("../config/config.json");
 
 const client = new CommandoClient({
   commandPrefix: "!",
