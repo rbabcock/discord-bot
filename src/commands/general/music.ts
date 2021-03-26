@@ -22,15 +22,15 @@ export default class extends Command {
         const track = response.data.recenttracks.track[0];
         console.log(track);
         const embed = new MessageEmbed()
-          .setAuthor('Now Playing')
-          .setColor('#0099ff')
+          .setAuthor("Now Playing")
+          .setColor("#0099ff")
           .setTitle(`${track.name}`)
           .setURL(`${track.url}`)
           .setThumbnail(`${track.image[2]["#text"]}`)
           .addFields([
-            { name: "Artist", value: `${track.artist['#text']}`},
-            { name: 'Album', value: `${track.album['#text']}` },
-          ])
+            { name: "Artist", value: `${track.artist["#text"]}` },
+            { name: "Album", value: `${track.album["#text"]}` },
+          ]);
         return embed;
       })
       .catch((err) => {

@@ -14,8 +14,8 @@ client.on("ready", () => console.log(`ready`));
 client.registry
   .registerDefaults()
   .registerGroups([
-	["general", "General Commands"],
-	["voice", "Voice Commands"],
+    ["general", "General Commands"],
+    ["voice", "Voice Commands"],
   ])
   .registerCommandsIn(join(__dirname, "commands"));
 
