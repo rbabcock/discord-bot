@@ -13,8 +13,8 @@ export default class ListCommand extends Command {
 
   async run(message: CommandoMessage) {
     const filesArr = []
-    const folder = 'src/audioFiles';
-    const files = fs.readdirSync(folder);
+    const path = 'src/audioFiles';
+    const files = fs.readdirSync(path);
     for(const file of files) {
       filesArr.push(file)
     }

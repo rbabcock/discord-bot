@@ -1,7 +1,7 @@
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import * as ytdl from "ytdl-core-discord";
 import * as ytdlCore from "ytdl-core";
-import * as fs from 'fs';
+import * as fs from "fs";
 
 export default class downloadCommand extends Command {
   constructor(client: CommandoClient) {
@@ -11,7 +11,7 @@ export default class downloadCommand extends Command {
       memberName: "download",
       description: "downloads a youtube video",
       examples: ["download"],
-      aliases: ['d'],
+      aliases: ["d"],
       args: [
         {
           key: "url",
@@ -30,7 +30,9 @@ export default class downloadCommand extends Command {
       return message.say("please use a valid URL");
     }
 
-      ytdlCore(url).pipe(fs.createWriteStream(`src/audioFiles/${info.videoDetails.title}.mp4`))
-      return message.channel.send(`Downloading: ${info.videoDetails.title}`);
+    ytdlCore(url, { filter: "audioonly" }).pipe(
+      fs.createWriteStream(`src/audioFiles/${info.videoDetails.title}.mp3`)
+    );
+    return message.say(`Downloading: ${info.videoDetails.title}`);
   }
-};
+}

@@ -3,14 +3,14 @@ import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import axios from "axios";
 const { api_keys } = require("../../config/config.json");
 
-export default class extends Command {
+export default class lastFMCommand extends Command {
   constructor(client: CommandoClient) {
     super(client, {
-      description: "get current listened to track for use",
+      description: "get current listened to track for user",
       group: "general",
-      memberName: "music",
-      name: "music",
-      aliases: ["m", "lfm"],
+      memberName: "lastfm",
+      name: "lastfm",
+      aliases: ["l", "lfm"],
     });
   }
   async run(message: CommandoMessage) {
