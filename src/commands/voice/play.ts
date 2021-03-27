@@ -3,7 +3,7 @@ import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import * as ytdl from "ytdl-core-discord";
 import * as ytdlCore from "ytdl-core";
 
-module.exports = class VoiceJoinCommand extends Command {
+export default class VoicePlayCommand extends Command {
   constructor(client: CommandoClient) {
     super(client, {
       name: "play",
@@ -11,6 +11,7 @@ module.exports = class VoiceJoinCommand extends Command {
       memberName: "play",
       description: "Makes the bot play a youtube video",
       examples: ["play"],
+      aliases: ['p'],
       args: [
         {
           key: "url",
@@ -31,8 +32,6 @@ module.exports = class VoiceJoinCommand extends Command {
     let voiceChannel = message.member?.voice.channel;
     let validate = await ytdl.validateURL(url);
     let info = await ytdlCore.getInfo(url);
-    // console.log(url)
-    // console.log(validate);
     console.log(info.videoDetails.title);
 
     if (!voiceChannel) {
@@ -54,7 +53,7 @@ module.exports = class VoiceJoinCommand extends Command {
       } catch (err) {
         console.log(err);
       }
-      return message.channel.send(`Now playing: ${info.videoDetails.title}`);
+      return message.say(`Now playing: ${info.videoDetails.title}`);
     } else {
       return message.say("Not connected to a voice channel");
     }
