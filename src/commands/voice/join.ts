@@ -29,9 +29,7 @@ export default class VoiceJoinCommand extends Command {
       );
     }
 
-    voiceChannel
-      .join()
-      .then(() => {
+    voiceChannel.join().then(() => {
         console.log(
           `${client.user?.username} have successfully connected to voice channel ${voiceChannel?.name}`
         );
