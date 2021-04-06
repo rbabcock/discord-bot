@@ -4,8 +4,6 @@ import * as config from 'config';
 
 const { token } = config.get('login');
 
-console.log(config.get('admin'));
-
 const client = new CommandoClient({
   commandPrefix: '!',
   owner: config.get('admin'),

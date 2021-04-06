@@ -1,7 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { Command, CommandoClient, CommandoMessage } from "discord.js-commando";
 import axios from "axios";
-const { api_keys } = require("../../config/config.json");
+import * as config from 'config';
 
 export default class lastFMCommand extends Command {
   constructor(client: CommandoClient) {
@@ -13,9 +13,11 @@ export default class lastFMCommand extends Command {
       aliases: ["l", "lfm"],
     });
   }
+
   async run(message: CommandoMessage) {
+    const { lastFm } = config.get('api_keys');
     const user = message.member?.displayName;
-    const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${api_keys.lastFm}&limit=1&nowplaying=true&format=json`;
+    const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${user}&api_key=${lastFm}&limit=1&nowplaying=true&format=json`;
     const request = await axios
       .get(url)
       .then((response) => {
