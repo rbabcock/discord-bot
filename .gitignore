@@ -3,3 +3,4 @@ dist
 /config/default.json
 /node_modules
 src/**/*.js
+.env
