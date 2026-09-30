@@ -1,0 +1,39 @@
+require 'net/http'
+require 'json'
+require 'uri'
+
+module Hiscores
+  URL  = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json'
+  NAME_REGEX = /\A[a-zA-Z0-9 _-]{1,12}\z/
+
+  def self.fetch(name)
+    uri = URI.parse(URL)
+    uri.query = URI.encode_www_form(player: name)
+
+    req = Net::HTTP::Get.new(uri)
+
+    res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, open_timeout: 5, read_timeout: 5) { |http| http.request(req) }
+
+    case res
+    when Net::HTTPSuccess then JSON.parse(res.body)
+    when Net::HTTPNotFound then nil
+    else raise "Hiscores return HTTP #{res.code}"
+    end
+  end
+
+  def self.commas(num)
+    num.to_i.to_s.reverse.scan(/\d{1,3}/).join(",").reverse
+  end
+
+
+  def self.format_stats(name, data)
+    skills = data['skills']
+    overall = skills.find { |s| s['name'] == 'Overall' }
+    lines = skills.reject { |s| s['name'] == 'Overall'}.map do |s|
+      format('%-13s %3d %s', s['name'], s['level'], commas([s['xp'].to_i, 0].max))
+    end
+
+    "**#{name}** | Total level: #{overall['level']} | Total XP: #{commas(overall['xp'])}\n" \
+    "```\n#{lines.join("\n")}\n```"
+  end
+end
