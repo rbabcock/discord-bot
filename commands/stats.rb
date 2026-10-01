@@ -1,16 +1,22 @@
 require_relative '../lib/hiscores'
-
+require_relative '../models/players'
+require_relative '../lib/command_helper'
 module Commands
   module Stats
     def self.register(bot)
-      bot.register_application_command(:stats, 'Look up OSRS hiscores for a player',
-                                       server_id: ENV['DISCORD_SERVER_ID']) do |cmd|
-        cmd.string('player', 'Player name (RSN)', required: true)
+     CommandHelper.register(bot, :stats, 'Look up OSRS hiscores for a player') do |cmd|
+        cmd.string('player', 'Player name (RSN)', required: false)
       end
 
       bot.application_command(:stats) do |event|
         name = event.options['player'].to_s.strip
+        name = Players.name_for(event.user.id).to_s if name.empty?
 
+        if name.empty?
+          event.respond(content: "Give me a name, or link yours first with `/setname`.", ephemeral: true)
+          next
+        end
+        
         unless name.match?(Hiscores::NAME_REGEX)
           event.respond(content: "That doesn't look like a valid OSRS name.", ephemeral: true)
           next
