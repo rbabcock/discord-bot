@@ -1,4 +1,4 @@
-require_relative '../lib/hiscores'
+require_relative '../lib/hi_scores'
 require_relative '../lib/database'
 
 class Players < ActiveRecord::Base

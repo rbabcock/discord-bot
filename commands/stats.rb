@@ -1,10 +1,10 @@
-require_relative '../lib/hiscores'
+require_relative '../lib/hi_scores'
 require_relative '../models/players'
 require_relative '../lib/command_helper'
 module Commands
   module Stats
     def self.register(bot)
-     CommandHelper.register(bot, :stats, 'Look up OSRS hiscores for a player') do |cmd|
+     CommandHelper.register(bot, :stats, 'Look up OSRS stats for a player') do |cmd|
         cmd.string('player', 'Player name (RSN)', required: false)
       end
 

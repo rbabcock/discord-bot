@@ -5,6 +5,8 @@ require 'uri'
 module Hiscores
   URL  = 'https://secure.runescape.com/m=hiscore_oldschool/index_lite.json'
   NAME_REGEX = /\A[a-zA-Z0-9 _-]{1,12}\z/
+  BOSS_START = "Abyssal Sire"
+  CLUE_START = "Clue Scrolls"
 
   def self.fetch(name)
     uri = URI.parse(URL)
@@ -35,5 +37,29 @@ module Hiscores
 
     "**#{name}** | Total level: #{overall['level']} | Total XP: #{commas(overall['xp'])}\n" \
     "```\n#{lines.join("\n")}\n```"
+  end
+
+
+  def self.group_activities(data)
+    activities = data['activities']
+    boss_index = activities.index {|a| a['name'] == BOSS_START} || activities.size
+    misc, boss = activities[0...boss_index], activities[boss_index..]
+    clues, misc = misc.partition {|a| a['name'].start_with?(CLUE_START)} 
+
+    {misc: misc, clues: clues, bosses: boss}
+  end
+
+
+  def self.kill_scores(name, data)
+    groups = group_activities(data).transform_values {|list| list.select {|a| a['score'].to_i > 0 }}
+
+
+    sections = { bosses: "Bosses", clues: "Clue Scrolls", misc: "Minigames" }.filter_map do |key, title|
+    next if groups[key].empty?
+    lines = groups[key].map { |a| format('%-34s %s', a['name'], commas(a['score'])) }
+    "#{title}\n#{lines.join("\n")}"
+  end
+
+    "**#{name}** | Kill counts\n```\n#{sections.join("\n\n")}\n```"
   end
 end
