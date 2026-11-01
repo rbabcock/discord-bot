@@ -5,11 +5,11 @@ require_relative '../lib/command_helper'
 module Commands
   module KillCount
     def self.register(bot)
-      CommandHelper.register(bot, :kill_count, 'Look up OSRS completion count for a player') do |cmd|
+      CommandHelper.register(bot, :kc, 'Look up OSRS completion count for a player') do |cmd|
         cmd.string('player', "Player name (RSN)", required: false)
       end
-
-      bot.application_command(:kill_count) do |event|
+      
+      bot.application_command(:kc) do |event|
         name = event.options['player'].to_s.strip
         name = Players.name_for(event.user.id).to_s if name.empty?
 
@@ -28,7 +28,9 @@ module Commands
         begin
           data = Hiscores.fetch(name)
           if data
-            event.edit_response(content: Hiscores.kill_scores(name, data))
+            first, *rest = Hiscores.kill_scores(name, data)
+            event.edit_response(content: first)
+            rest.each { |msg| event.send_message(content: msg) }
           else
             event.edit_response(content: "No KC or activity found for **#{name}**.")
           end

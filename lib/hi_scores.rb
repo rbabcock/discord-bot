@@ -7,6 +7,7 @@ module Hiscores
   NAME_REGEX = /\A[a-zA-Z0-9 _-]{1,12}\z/
   BOSS_START = "Abyssal Sire"
   CLUE_START = "Clue Scrolls"
+  MESSAGE_LIMIT = 2000
 
   def self.fetch(name)
     uri = URI.parse(URL)
@@ -55,11 +56,35 @@ module Hiscores
 
 
     sections = { bosses: "Bosses", clues: "Clue Scrolls", misc: "Minigames" }.filter_map do |key, title|
-    next if groups[key].empty?
-    lines = groups[key].map { |a| format('%-34s %s', a['name'], commas(a['score'])) }
-    "#{title}\n#{lines.join("\n")}"
+      next if groups[key].empty?
+      lines = groups[key].map { |a| format('%-34s %s', a['name'], commas(a['score'])) }
+      "#{title}\n#{lines.join("\n")}"
+    end
+
+    chunk_blocks("**#{name}** | Kill counts", sections)
   end
 
-    "**#{name}** | Kill counts\n```\n#{sections.join("\n\n")}\n```"
+
+  # Discord caps messages at 2000 chars, so pack lines into code blocks that
+  # each fit, with a blank line between sections.
+  def self.chunk_blocks(header, sections, limit = MESSAGE_LIMIT)
+    lines = sections.flat_map { |section| ["", *section.lines(chomp: true)] }.drop(1)
+    return ["#{header}\nNothing on the hiscores yet."] if lines.empty?
+
+    messages = []
+    prefix = "#{header}\n"
+    current = []
+    block = ->(parts) { "#{prefix}```\n#{parts.join("\n")}\n```" }
+
+    lines.each do |line|
+      if current.any? && block.call(current + [line]).size > limit
+        messages << block.call(current)
+        prefix = ""
+        current = []
+      end
+      current << line unless current.empty? && line.empty?
+    end
+
+    messages << block.call(current)
   end
 end
