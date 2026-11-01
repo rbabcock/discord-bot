@@ -9,8 +9,9 @@ module Commands
       end
 
       bot.application_command(:stats) do |event|
+        linked = Players.name_for(event.user.id).to_s
         name = event.options['player'].to_s.strip
-        name = Players.name_for(event.user.id).to_s if name.empty?
+        name = linked if name.empty?
 
         if name.empty?
           event.respond(content: "Give me a name, or link yours first with `/setname`.", ephemeral: true)
@@ -27,7 +28,15 @@ module Commands
         begin
           data = Hiscores.fetch(name)
           if data
-            event.edit_response(content: Hiscores.format_stats(name, data))
+            event.edit_response do |builder|
+              builder.add_embed do |embed| 
+                embed.title = "#{name}: Total Stats"
+                embed.color = 0xC8AA6E
+                embed.author = { name: event.user.display_name, icon_url: event.user.avatar_url} if linked.casecmp?(name)
+                embed.footer = { text: "Data from OSRS highscores"}
+                embed.description = Hiscores.format_stats(name, data)
+              end
+            end
           else
             event.edit_response(content: "No hiscores entry found for **#{name}**.")
           end

@@ -10,8 +10,9 @@ module Commands
       end
       
       bot.application_command(:kc) do |event|
+        linked = Players.name_for(event.user.id).to_s
         name = event.options['player'].to_s.strip
-        name = Players.name_for(event.user.id).to_s if name.empty?
+        name = linked if name.empty?
 
         if name.empty?
           event.respond(content: "Give me a name, or link yours first with '/setname'.", ephemeral: true)
@@ -28,9 +29,19 @@ module Commands
         begin
           data = Hiscores.fetch(name)
           if data
-            first, *rest = Hiscores.kill_scores(name, data)
-            event.edit_response(content: first)
-            rest.each { |msg| event.send_message(content: msg) }
+            sections = Hiscores.kill_scores(name, data)
+            event.edit_response do |builder| 
+              builder.add_embed do |embed|
+                embed.title = "#{name}:  Bosses/Activity counts"
+                embed.color = 0xC8AA6E
+                embed.author = { name: event.user.display_name, icon_url: event.user.avatar_url} if linked.casecmp?(name)
+                embed.footer = { text: "Data from OSRS highscores" }
+                embed.description = sections.map do |section|
+                  title, *lines = section.lines(chomp: true)
+                  "**#{title}**\n```\n#{lines.join("\n")}\n```"
+                end.join("\n")
+              end
+            end
           else
             event.edit_response(content: "No KC or activity found for **#{name}**.")
           end

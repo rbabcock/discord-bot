@@ -61,30 +61,6 @@ module Hiscores
       "#{title}\n#{lines.join("\n")}"
     end
 
-    chunk_blocks("**#{name}** | Kill counts", sections)
-  end
-
-
-  # Discord caps messages at 2000 chars, so pack lines into code blocks that
-  # each fit, with a blank line between sections.
-  def self.chunk_blocks(header, sections, limit = MESSAGE_LIMIT)
-    lines = sections.flat_map { |section| ["", *section.lines(chomp: true)] }.drop(1)
-    return ["#{header}\nNothing on the hiscores yet."] if lines.empty?
-
-    messages = []
-    prefix = "#{header}\n"
-    current = []
-    block = ->(parts) { "#{prefix}```\n#{parts.join("\n")}\n```" }
-
-    lines.each do |line|
-      if current.any? && block.call(current + [line]).size > limit
-        messages << block.call(current)
-        prefix = ""
-        current = []
-      end
-      current << line unless current.empty? && line.empty?
-    end
-
-    messages << block.call(current)
+    sections
   end
 end
