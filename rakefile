@@ -1,0 +1,19 @@
+require "active_record"
+require "yaml"
+
+namespace :db do
+  task :environment do
+    config = YAML.load_file("config/database.yml", aliases: true)
+    ActiveRecord::Base.establish_connection(config["development"])
+  end
+
+  desc "Run Migrations"
+  task migrate: :environment do
+    ActiveRecord::MigrationContext.new("db/migrate").migrate
+  end
+
+  desc "Roll back the last migration"
+  task rollback: :environment do
+    ActiveReacord::MigrationContext.new("db/migrate").rollback
+  end
+end
