@@ -6,14 +6,14 @@ class Cache
   end
 
   def fetch(key, ttl: @ttl)
-    @muxet.synchroize do
+    @muxet.synchronize do
       entry = @store[key]
       return entry[:value] if entry && entry[:expired_at] > now 
     end
 
     value = yield
 
-    @muxet.synchroize do 
+    @muxet.synchronize do 
       @store[key] = {value: value, expired_at: now + @ttl}
     end
     
@@ -21,18 +21,16 @@ class Cache
   end
 
   def delete(key)
-    @muxet.synchroize { @store.delete(key) }
+    @muxet.synchronize { @store.delete(key) }
   end
 
   def clear
-    @muxet.synchroize { @store.clear }
+    @muxet.synchronize { @store.clear }
   end
 
   def prune
-    @muxet.synchroize { @store.delete_if { |_, entry| entry[:expired_at] <= now } }
+    @muxet.synchronize { @store.delete_if { |_, entry| entry[:expired_at] <= now } }
   end
-
-  
 
   private
 
