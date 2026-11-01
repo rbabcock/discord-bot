@@ -1,0 +1,6 @@
+bot: 
+  build:
+  env_file: .env
+  volumes:
+    - ./db:/app/db
+  restart: unless-stopped

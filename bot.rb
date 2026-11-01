@@ -1,6 +1,8 @@
 require 'discordrb'
 require 'dotenv/load'
 
+$stdout.sync = true
+
 bot = Discordrb::Bot.new(token: ENV.fetch('BOT_TOKEN'), intents: [:servers])
 
 Dir[File.join(__dir__, 'commands', '*.rb')].sort.each { |file| require file }

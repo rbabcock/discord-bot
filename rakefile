@@ -14,6 +14,6 @@ namespace :db do
 
   desc "Roll back the last migration"
   task rollback: :environment do
-    ActiveReacord::MigrationContext.new("db/migrate").rollback
+    ActiveRecord::MigrationContext.new("db/migrate").rollback
   end
 end
