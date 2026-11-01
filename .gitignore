@@ -5,4 +5,3 @@ dist
 src/**/*.js
 .env
 bot.sqlite3*
-database.yml
