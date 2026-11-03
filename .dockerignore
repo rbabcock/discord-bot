@@ -1,0 +1,5 @@
+.env
+.tfvars
+db/*.sqlite3
+.git
+data/

@@ -1,7 +1,8 @@
 services:
   bot: 
     build: .
+    image: discord-bot:0.1.1
     env_file: .env
     volumes:
-    - ./db:/app/db
+    - ./data:/app/data
     restart: unless-stopped
