@@ -4,4 +4,4 @@ dist
 /node_modules
 src/**/*.js
 .env
-bot.sqlite3*
+data/

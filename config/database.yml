@@ -1,4 +1,4 @@
 development:
   adapter: sqlite3
-  database: db/bot.sqlite3
+  database: data/bot.sqlite3
   pool: 10
