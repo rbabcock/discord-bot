@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module CommandHelper
   SERVER_IDS = ENV.fetch('DISCORD_SERVER_IDS', '').split(',').map(&:strip).reject(&:empty?)
 

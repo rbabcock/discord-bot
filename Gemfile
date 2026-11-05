@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-source "https://rubygems.org"
+source 'https://rubygems.org'
 
+gem 'activerecord'
 gem 'discordrb'
 gem 'dotenv'
-gem 'activerecord'
-gem "sqlite3"
-gem "rake"
+gem 'rake'
+gem 'rubocop'
+gem 'sqlite3'

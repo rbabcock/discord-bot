@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 require_relative '../lib/hi_scores'
 require_relative '../lib/database'
 
 class Players < ActiveRecord::Base
-  validates :discord_id, presence:true, uniqueness: true
-  validates :osrs_name, format: { with: Hiscores::NAME_REGEX}
-
+  validates :discord_id, presence: true, uniqueness: true
+  validates :osrs_name, format: { with: Hiscores::NAME_REGEX }
 
   def self.link(discord_id, name)
     with_connection do
@@ -13,7 +14,7 @@ class Players < ActiveRecord::Base
   end
 
   def self.name_for(discord_id)
-    with_connection do 
+    with_connection do
       find_by(discord_id: discord_id.to_s)&.osrs_name
     end
   end

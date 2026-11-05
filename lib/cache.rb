@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Cache
   def initialize(ttl: 300)
     @ttl = ttl
@@ -8,15 +10,15 @@ class Cache
   def fetch(key, ttl: @ttl)
     @muxet.synchronize do
       entry = @store[key]
-      return entry[:value] if entry && entry[:expired_at] > now 
+      return entry[:value] if entry && entry[:expired_at] > now
     end
 
     value = yield
 
-    @muxet.synchronize do 
-      @store[key] = {value: value, expired_at: now + @ttl}
+    @muxet.synchronize do
+      @store[key] = { value: value, expired_at: now + @ttl }
     end
-    
+
     value
   end
 
